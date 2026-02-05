@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .models import Story, Page
+from .models import Story, Page, Choice
 from . import db
 
 api = Blueprint("api", __name__)
@@ -76,3 +76,23 @@ def get_start_page(story_id):
 def get_page(page_id):
     page = Page.query.get_or_404(page_id)
     return page.to_dict()
+
+
+@api.route("/pages/<int:page_id>/choices", methods=["POST"])
+def create_choice(page_id):
+    page = Page.query.get_or_404(page_id)
+    data = request.get_json()
+
+    if not data or 'text' not in data or "next_page_id" not in data:
+        return {"error": "Choice text and next_page_id required"}, 400
+
+    choice = Choice(
+        page_id=page.id,
+        text=data["text"],
+        next_page_id=data["next_page_id"],
+    )
+
+    db.session.add(choice)
+    db.session.commit()
+
+    return choice.to_dict(), 201
