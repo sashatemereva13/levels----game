@@ -19,6 +19,13 @@ def list_stories():
     stories = query.all()
     return jsonify([story.to_dict() for story in stories])
 
+
+@api.route("/stories/<int:story_id>", methods=["GET"])
+def get_story(story_id):
+    story = Story.query.get_or_404(story_id)
+    return story.to_dict()
+
+
 @api.route("/stories", methods=["POST"])
 @require_api_key
 def create_story():

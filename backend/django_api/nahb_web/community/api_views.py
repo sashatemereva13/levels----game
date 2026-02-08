@@ -6,9 +6,10 @@ from django.db.models import Avg, Count
 from .models import Rating
 
 from services.rating_service import RatingService
+from services.report_service import ReportService
 
-service = RatingService()
-
+rating_service = RatingService()
+report_service = ReportService()
 
 # =========================
 # Rate (protected)
@@ -26,7 +27,7 @@ def rate_story_api(request, story_id):
         return JsonResponse({"error": "score required"}, status=400)
 
     try:
-        rating = service.rate(request.user, story_id, int(score), comment)
+        rating = rating_service.rate(request.user, story_id, int(score), comment)
     except ValueError as e:
         return JsonResponse({"error": str(e)}, status=400)
 
@@ -39,11 +40,53 @@ def rate_story_api(request, story_id):
 
 
 # =========================
+# Report (protected)
+# =========================
+@login_required
+@require_POST
+def report_story_api(request, story_id):
+    body = json.loads(request.body)
+
+    reason = body.get("reason", "")
+
+    try:
+        report_service.create(request.user, story_id, reason)
+    except ValueError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"success": True})
+
+
+@login_required
+@require_GET
+def reports_admin_api(request):
+    if not request.user.is_staff:
+        return JsonResponse({"error": "admin only"}, status=403)
+
+    return JsonResponse(report_service.all(), safe=False)
+
+
+
+@login_required
+@require_GET
+def story_reports_api(request, story_id):
+    if not request.user.is_staff:
+        return JsonResponse({"error": "admin only"}, status=403)
+
+    return JsonResponse(report_service.for_story(story_id), safe=False)
+
+
+@require_GET
+def report_count_api(request, story_id):
+    return JsonResponse({"count": report_service.count(story_id)})
+
+
+# =========================
 # Stats (public)
 # =========================
 @require_GET
 def rating_stats_api(request, story_id):
-    return JsonResponse(service.stats(story_id))
+    return JsonResponse(rating_service.stats(story_id))
 
 
 # =========================
@@ -51,7 +94,7 @@ def rating_stats_api(request, story_id):
 # =========================
 @require_GET
 def rating_comments_api(request, story_id):
-    return JsonResponse(service.comments(story_id), safe=False)
+    return JsonResponse(rating_service.comments(story_id), safe=False)
 
 
 # =========================
@@ -59,7 +102,7 @@ def rating_comments_api(request, story_id):
 # =========================
 @require_GET
 def top_stories_api(request):
-    return JsonResponse(service.top(), safe=False)
+    return JsonResponse(rating_service.top(), safe=False)
 
 
 # =========================
@@ -67,4 +110,7 @@ def top_stories_api(request):
 # =========================
 @require_GET
 def recent_comments_api(request, story_id):
-    return JsonResponse(service.recent_comments(story_id), safe=False)
+    return JsonResponse(rating_service.recent_comments(story_id), safe=False)
+
+
+

@@ -10,7 +10,7 @@ class StoryAPIClient:
         return res.json()
 
     def _headers(self):
-        return {"X-API-KEY": settings.STORY_API_URL}
+        return {"X-API-KEY": settings.STORY_API_KEY}
 
     def _post(self, path, data):
         res = requests.post(

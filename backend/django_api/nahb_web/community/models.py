@@ -22,3 +22,10 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -> story {self.story_id}: {self.score}"
+
+
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    story_id = models.IntegerField(db_index=True)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

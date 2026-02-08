@@ -34,7 +34,6 @@ class Page(db.Model):
 
     choices = db.relationship(
         "Choice",
-        overlaps="choices",
         foreign_keys="Choice.page_id",
         back_populates="page",
         lazy=True)
@@ -57,7 +56,7 @@ class Choice(db.Model):
     page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
     text = db.Column(db.String(255), nullable=False)
     next_page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
-    page = db.relationship("Page", foreign_keys=[page_id], backref="outgoing_choices")
+    page = db.relationship("Page", foreign_keys=[page_id], back_populates="choices")
     next_page = db.relationship("Page", foreign_keys=[next_page_id])
 
     def to_dict(self):
