@@ -1,0 +1,79 @@
+.playPage {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: radial-gradient(circle at 30% 20%, #1b1a24, #0e0d14);
+}
+
+.playNav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.playNav button {
+  background: none;
+  border: none;
+  color: white;
+  font-family: Panchang-Light;
+  cursor: pointer;
+}
+
+.storyText {
+  max-width: 680px;
+  margin: auto;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.choicesGrid {
+  display: grid;
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+
+.choiceCard {
+  padding: 1.2rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.storyText {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  max-width: 680px;
+  margin: auto;
+
+  animation: softFade 0.6s ease;
+}
+
+@keyframes softFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.storyText::after {
+  content: "|";
+  margin-left: 4px;
+  opacity: 0.4;
+  animation: blink 1.4s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

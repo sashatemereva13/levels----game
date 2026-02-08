@@ -1,0 +1,92 @@
+
+
+/* Back button */
+.backButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.2rem;
+
+  border-radius: 5px;
+  color: #9f94a7;
+  transition: 0.3s ease;
+  z-index: 1;
+}
+
+/* Vibration level list */
+.typesOfConsciousness {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Individual level link */
+.typesOfConsciousness a {
+  text-decoration: none;
+  color: #e2ffde;
+  transition: all 0.3s ease-in-out;
+  width: fit-content;
+}
+
+/* Level text */
+.typesOfConsciousness a p {
+  margin: 0;
+  font-size: 1rem;
+  font-family: "Panchang-Light";
+  transition: transform 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Hover effect */
+.typesOfConsciousness a:hover p {
+  color: #3ba279;
+  transform: scale(1.04);
+}
+
+.aLevelContainer {
+  margin: 5rem 2rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  height: 80vh;
+  overflow-y: auto;
+
+  color: #f1f5ea;
+  background: rgba(103, 103, 103, 0.408);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 0 1.3rem;
+  font-size: 1rem;
+  font-family: "Panchang-Light";
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  line-height: 1.5;
+
+  z-index: 0;
+  transition: all 0.4s ease;
+}
+
+/* Mobile responsive fallback */
+@media screen and (max-width: 768px) {
+  .levelsDiv h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .levelsDiv p {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .typesOfConsciousness a p {
+    font-size: 0.9rem;
+  }
+}

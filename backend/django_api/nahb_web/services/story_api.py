@@ -1,13 +1,32 @@
-import requirements
-from django.config import settings
+import requests
+from django.conf import settings
 
 class StoryAPIClient:
-    BASE_URL =  "http://127.0.0.1:5001"
+    BASE_URL = settings.STORY_API_URL
 
     def _get(self, path):
         res = requests.get(f"{self.BASE_URL}{path}")
         res.raise_for_status()
         return res.json()
+
+    def _headers(self):
+        return {"X-API-KEY": settings.STORY_API_URL}
+
+    def _post(self, path, data):
+        res = requests.post(
+            f"{self.BASE_URL}{path}",
+            json=data,
+            headers=self._headers()
+        )
+        res.raise_for_status()
+        return res.json()
+
+    def _delete(self, path):
+        res = requests.delete(
+            f"{self.BASE_URL}{path}",
+            headers=self._headers()
+        )
+        res.raise_for_status()
 
     def get_published_stories(self):
         return self._get("/stories?status=published")
@@ -20,3 +39,9 @@ class StoryAPIClient:
 
     def get_page(self, page_id):
         return self._get(f"/pages/{page_id}")
+
+    def create_story(self, data):
+        return self._post("/stories", data)
+
+    def delete_story(self, story_id):
+        self._delete(f"/stories/{story_id}")

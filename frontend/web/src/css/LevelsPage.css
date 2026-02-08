@@ -1,0 +1,213 @@
+/* ======================================
+   🌿 Selfinder — Levels Page
+====================================== */
+
+:root {
+  --bgDark: #0f0e14;
+  --bgSoft: #17161f;
+
+  --textMain: #f4f3f8;
+  --textSoft: #b7b6c9;
+
+  --glowGreen: #7fffd4;
+  --glowPink: #ffb3d9;
+
+  --radiusXL: 28px;
+}
+
+/* ======================================
+   Page layout
+====================================== */
+
+.levelsPage {
+  min-height: 100vh;
+  padding: 6rem 2rem 5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(127, 255, 212, 0.08),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 179, 217, 0.08),
+      transparent 45%
+    ),
+    var(--bgDark);
+
+  color: var(--textMain);
+}
+
+/* ======================================
+   Title
+====================================== */
+
+.levelsTitle {
+  font-size: clamp(2.6rem, 4vw, 3.6rem);
+  font-family: "Panchang-Light";
+  letter-spacing: 0.08em;
+
+  text-transform: lowercase;
+
+  margin-bottom: 4rem;
+
+  opacity: 0.95;
+
+  /* subtle glow */
+  text-shadow:
+    0 0 18px rgba(127, 255, 212, 0.15),
+    0 0 32px rgba(255, 179, 217, 0.08);
+}
+
+/* ======================================
+   Grid
+====================================== */
+
+.levelsGrid {
+  width: 100%;
+  max-width: 1100px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2.4rem;
+}
+
+/* ======================================
+   Link reset
+====================================== */
+
+.levelLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ======================================
+   Level Card (floating aura style)
+====================================== */
+
+.levelCard {
+  height: 140px;
+
+  border-radius: var(--radiusXL);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.4s ease;
+
+  cursor: pointer;
+
+  overflow: hidden;
+}
+
+/* ======================================
+   Aura glow on hover
+====================================== */
+
+.levelCard::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+
+  border-radius: inherit;
+
+  background:
+    radial-gradient(circle at 30% 40%, var(--glowGreen), transparent 60%),
+    radial-gradient(circle at 70% 60%, var(--glowPink), transparent 60%);
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+
+  z-index: 0;
+  filter: blur(40px);
+}
+
+.levelCard:hover::before {
+  opacity: 0.35;
+}
+
+.levelCard:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(127, 255, 212, 0.12);
+}
+
+/* ======================================
+   Label text
+====================================== */
+
+.levelLabel {
+  position: relative;
+  z-index: 1;
+
+  font-family: "Panchang-Medium";
+  font-size: 1.15rem;
+
+  letter-spacing: 0.04em;
+  text-align: center;
+
+  color: var(--textMain);
+}
+
+/* ======================================
+   Loading state
+====================================== */
+
+.loading {
+  margin-top: 4rem;
+  font-family: "Panchang-Light";
+  opacity: 0.6;
+
+  animation: breathe 2.8s ease-in-out infinite;
+}
+
+/* ======================================
+   Soft breathing animation
+====================================== */
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ======================================
+   Mobile tweaks
+====================================== */
+
+@media (max-width: 640px) {
+  .levelsPage {
+    padding: 4rem 1.2rem;
+  }
+
+  .levelsGrid {
+    gap: 1.6rem;
+  }
+
+  .levelCard {
+    height: 110px;
+  }
+}

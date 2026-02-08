@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from .models import Story, Page, Choice
 from . import db
 
+from .security import require_api_key
+
 api = Blueprint("api", __name__)
 
 @api.route("/stories", methods=["GET"])
@@ -11,11 +13,14 @@ def list_stories():
     query = Story.query
     if status:
         query = query.filter_by(status=status)
+    else:
+        query = query.filter_by(status="published")
 
     stories = query.all()
     return jsonify([story.to_dict() for story in stories])
 
 @api.route("/stories", methods=["POST"])
+@require_api_key
 def create_story():
     data = request.get_json()
 
@@ -35,12 +40,16 @@ def create_story():
     return story.to_dict(), 201
 
 @api.route("/stories/<int:story_id>/pages", methods=["POST"])
+@require_api_key
 def create_page(story_id):
     story = Story.query.get_or_404(story_id)
     data = request.get_json()
 
     if not data or "text" not in data:
         return {"error": "Page text is required"}, 400
+
+    if story.status == "suspended":
+        return {"error": "Story unavailable"}, 403
 
     page = Page(
         story_id=story.id,
@@ -65,6 +74,9 @@ def create_page(story_id):
 def get_start_page(story_id):
     story = Story.query.get_or_404(story_id)
 
+    if story.status != "published":
+        return {"error": "Story unavailable"}, 403
+
     if not story.start_page_id:
         return {"error": "Story has no start page"}, 400
 
@@ -75,6 +87,12 @@ def get_start_page(story_id):
 @api.route("/pages/<int:page_id>", methods=["GET"])
 def get_page(page_id):
     page = Page.query.get_or_404(page_id)
+
+    story = Story.query.get(page.story_id)
+
+    if story.status != "published":
+        return {"error": "Story unavailable"}, 403
+
     return page.to_dict()
 
 
@@ -82,9 +100,13 @@ def get_page(page_id):
 def create_choice(page_id):
     page = Page.query.get_or_404(page_id)
     data = request.get_json()
+    story = Story.query.get_or_404(page.story_id)
 
     if not data or 'text' not in data or "next_page_id" not in data:
         return {"error": "Choice text and next_page_id required"}, 400
+
+    if story.status == "suspended":
+        return {"error": "Story unavailable"}, 403
 
     choice = Choice(
         page_id=page.id,
@@ -96,3 +118,37 @@ def create_choice(page_id):
     db.session.commit()
 
     return choice.to_dict(), 201
+
+
+@api.route("/stories/<int:story_id>", methods=["DELETE"])
+@require_api_key
+def delete_story(story_id):
+
+    story = Story.query.get_or_404(story_id)
+    if story.status == "suspended":
+        return {"error": "Story unavailable"}, 403
+
+    db.session.delete(story)
+    db.session.commit()
+
+    return "", 204
+
+
+@api.route("/stories/<int:story_id>", methods=["PUT"])
+@require_api_key
+def update_story(story_id):
+    story = Story.query.get_or_404(story_id)
+    data = request.get_json()
+
+    if story.status == "suspended":
+        return {"error": "Story suspended"}, 403
+
+    story.title = data.get("title", story.title)
+    story.description = data.get("description", story.description)
+    story.status = data.get("status", story.status)
+    story.illustration_url = data.get("illustration_url", story.illustration_url)
+
+    db.session.commit()
+
+    return story.to_dict()
+

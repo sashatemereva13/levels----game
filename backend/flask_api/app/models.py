@@ -7,7 +7,7 @@ class Story(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(20), default="draft")
-    start_page_id = db.Column(db.Integer, nullable=True)
+    start_page_id = db.Column(db.Integer, db.ForeignKey("pages.id", name="fk_story_start_page"), nullable=True)
     illustration_url = db.Column(db.String(500), nullable=True)
 
     def to_dict(self):
@@ -32,7 +32,12 @@ class Page(db.Model):
     ending_label = db.Column(db.String(100), nullable=True)
     illustration_url = db.Column(db.String(500), nullable=True)
 
-    choices = db.relationship("Choice", foreign_keys="Choice.page_id", backref="page", lazy=True)
+    choices = db.relationship(
+        "Choice",
+        overlaps="choices",
+        foreign_keys="Choice.page_id",
+        back_populates="page",
+        lazy=True)
 
     def to_dict(self):
         return {
@@ -52,6 +57,8 @@ class Choice(db.Model):
     page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
     text = db.Column(db.String(255), nullable=False)
     next_page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
+    page = db.relationship("Page", foreign_keys=[page_id], backref="outgoing_choices")
+    next_page = db.relationship("Page", foreign_keys=[next_page_id])
 
     def to_dict(self):
         return {
