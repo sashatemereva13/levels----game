@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getStories } from "../../api/gameplay";
+import { getStories } from "../../api/gameplayAPI";
 import LevelCard from "./LevelCard";
 import "../../css/LevelsPage.css";
 

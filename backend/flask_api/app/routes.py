@@ -39,6 +39,10 @@ def create_story():
         description=data.get("description"),
         status=data.get("status", "draft"),
         illustration_url=data.get("illustration_url"),
+
+        duration_minutes=data.get("duration_minutes", 3),
+        cover_url=data.get("cover_url"),
+        genre=data.get("genre"),
     )
 
     db.session.add(story)
@@ -126,6 +130,28 @@ def create_choice(page_id):
 
     return choice.to_dict(), 201
 
+
+@api.route("/page/<int:page_id>", methods=["PUT"])
+@require_api_key
+def update_page(page_id):
+    page = Page.query.get_or_404(page_id)
+    data = request.get_json()
+
+    page.text = data.get("text", page.text)
+    page.is_ending = data.get("is_ending", page.is_ending)
+
+    db.session.commit()
+
+    return page.to_dict()
+
+
+@api.route("/pages/<int:page_id>", methods=["DELETE"])
+@require_api_key
+def delete_page(page_id):
+    page = Page.query.get_or_404(page_id)
+    db.session.delete(page)
+    db.session.commit()
+    return "", 204
 
 @api.route("/stories/<int:story_id>", methods=["DELETE"])
 @require_api_key

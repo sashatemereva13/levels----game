@@ -1,23 +1,31 @@
-const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const BASE = (import.meta.env.VITE_API_URL || "http://localhost:8000").replace(
+  /\/$/,
+  "",
+);
 
-const api = (path, options = {}) =>
-  fetch(`${BASE}${path}`, {
+const api = async (path, options = {}) => {
+  const res = await fetch(`${BASE}${path}`, {
     credentials: "include",
     headers: { "Content-Type": "application/json", ...options.headers },
     ...options,
-  }).then((r) => r.json());
+  });
 
-export const getStories = () => api("/stories/");
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`API ${res.status}: ${text}`);
+  }
 
-export const startStory = (id) => api(`/gameplay/start/${id}/`);
+  return res.json();
+};
 
-export const getCurrentPage = (id) => api(`/gameplay/current/${id}/`);
+export const getStories = () => api("/stories");
+
+export const startStory = (id) => api(`/gameplay/${id}/start`);
+
+export const getCurrentPage = (id) => api(`/gameplay/${id}/current`);
 
 export const choose = (storyId, nextPageId) =>
-  api(`/gameplay/choose/`, {
+  api(`/gameplay/${storyId}/choice`, {
     method: "POST",
-    body: JSON.stringify({
-      story_id: storyId,
-      next_page_id: nextPageId,
-    }),
+    body: JSON.stringify({ next_page_id: nextPageId }),
   });

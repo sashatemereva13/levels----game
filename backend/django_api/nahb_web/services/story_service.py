@@ -21,11 +21,29 @@ class StoryService:
 
     def user_stories(self, user):
         owned_ids = StoryOwnership.objects.filter(user=user).values_list("story_id", flat=True)
-        return [self.api.get_story(i) for i in owned_ids]
+
+        stories = []
+
+        for i in owned_ids:
+            try:
+                story = self.api.get_story(i)
+                if story:
+                    stories.append(story)
+            except:
+                pass
+
+        return stories
 
     def delete_story(self, user, story_id):
         if not StoryOwnership.objects.filter(user=user, story_id=story_id).exists():
             raise PermissionError("Not owner")
 
         self.api.delete_story(story_id)
+
+    def update_story(self, user, story_id, data):
+        if not StoryOwnership.objects.filter(user=user, story_id=story_id).exists():
+            raise PermissionError("Not owner")
+
+        return self.api.update_story(story_id, data)
+
 

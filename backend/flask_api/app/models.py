@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from . import  db
 
 class Story(db.Model):
@@ -9,6 +11,10 @@ class Story(db.Model):
     status = db.Column(db.String(20), default="draft")
     start_page_id = db.Column(db.Integer, db.ForeignKey("pages.id", name="fk_story_start_page"), nullable=True)
     illustration_url = db.Column(db.String(500), nullable=True)
+    duration_minutes = db.Column(db.Integer, default=3)
+    cover_url = db.Column(db.String(255))
+    genre = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
         return {
@@ -18,6 +24,11 @@ class Story(db.Model):
             "status": self.status,
             "start_page_id": self.start_page_id,
             "illustration_url": self.illustration_url,
+
+            "duration_minutes": self.duration_minutes,
+            "cover_url": self.cover_url,
+            "genre": self.genre,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 
 

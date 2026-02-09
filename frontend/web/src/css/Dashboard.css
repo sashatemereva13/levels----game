@@ -1,0 +1,283 @@
+/* ================= PAGE ================= */
+
+.dashboardPage {
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* ================= HEADER ================= */
+
+.dashboardHeader h1 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+}
+
+/* ================= CREATE ================= */
+
+.dashboardCreate {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.dashboardCreate input,
+.dashboardCreate textarea {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.dashboardCreate button {
+  padding: 0.7rem 1.4rem;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+/* ================= GRID ================= */
+
+.dashboardGrid {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ================= CARD ================= */
+.cardStats {
+  display: flex;
+  gap: 1.4rem;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.dashboardCard {
+  padding: 1.4rem;
+  border-radius: 22px;
+
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* top */
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* badges */
+
+.badgePublished {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(100, 255, 200, 0.25);
+}
+
+.badgeDraft {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(255, 200, 100, 0.25);
+}
+
+/* actions */
+
+.cardActions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.cardActions button {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* empty */
+
+.dashboardEmpty {
+  opacity: 0.6;
+  margin-top: 4rem;
+  text-align: center;
+}
+
+/* ===============================
+   GRID
+================================ */
+
+.dashboardGrid {
+  display: grid;
+  gap: 2.4rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ===============================
+   CARD
+================================ */
+
+.storyCard {
+  border-radius: 26px;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+
+  transition: 0.35s ease;
+  cursor: pointer;
+}
+
+.storyCard:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(127, 255, 212, 0.12);
+}
+
+/* ===============================
+   COVER IMAGE
+================================ */
+
+.storyCover {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+
+  position: relative;
+}
+
+.storyCover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.6)
+  );
+}
+
+/* ===============================
+   BODY
+================================ */
+
+.storyBody {
+  padding: 1.3rem 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* ===============================
+   TITLE + BADGE
+================================ */
+
+.storyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.storyHeader h3 {
+  font-size: 1.05rem;
+  font-family: "Panchang-Medium";
+}
+
+/* ===============================
+   META
+================================ */
+
+.storyMeta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+/* ===============================
+   STATS
+================================ */
+
+.storyStats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ===============================
+   ACTIONS
+================================ */
+
+.storyActions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.storyActions button {
+  flex: 1;
+
+  padding: 0.5rem;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition: 0.25s;
+}
+
+.storyActions button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.storyActions .danger {
+  background: rgba(255, 80, 80, 0.15);
+}
+.storyActions .danger:hover {
+  background: rgba(255, 80, 80, 0.3);
+}
+
+/* ===============================
+   BADGES
+================================ */
+
+.badgePublished {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  background: rgba(127, 255, 212, 0.15);
+  color: #7fffd4;
+}
+
+.badgeDraft {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.storyCover {
+  background:
+    radial-gradient(circle at 30% 40%, #7fffd4, transparent 60%),
+    radial-gradient(circle at 70% 60%, #ffb3d9, transparent 60%), #0f0e14;
+}

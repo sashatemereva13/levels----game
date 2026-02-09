@@ -1,0 +1,41 @@
+.navBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem 2rem;
+
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.4);
+
+  z-index: 100;
+}
+
+.navRight {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.navBar a {
+  text-decoration: none;
+  color: #f5e5ff;
+  opacity: 0.8;
+}
+
+.navBar a:hover {
+  opacity: 1;
+}
+
+.navBar button,
+.playButtonInner {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}

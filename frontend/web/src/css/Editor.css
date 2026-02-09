@@ -1,0 +1,75 @@
+.editorCard {
+  padding: 1.4rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.editorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editorHeader button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.choicesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.endingToggle {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.editorTopBar {
+  width: 100%;
+  max-width: 1100px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 2.5rem;
+}
+
+.editorActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.editorActions button {
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.editorActions button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.editorStatus {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.editorStatus button {
+  padding: 0.4rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}

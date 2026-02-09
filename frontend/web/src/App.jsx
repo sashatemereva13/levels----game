@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getStories } from "./api/gameplay";
+
 import "./App.css";
 
 export default function App() {
@@ -9,13 +9,13 @@ export default function App() {
     <div className="levelsPage">
       <h1 className="levelsTitle">vibration levels</h1>
       <Link to="/levels" className="playButton">
-        <motion.div
+        <motion.button
           className="playButtonInner"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           levels
-        </motion.div>
+        </motion.button>
       </Link>
     </div>
   );

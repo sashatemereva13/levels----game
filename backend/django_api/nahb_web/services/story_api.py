@@ -28,6 +28,17 @@ class StoryAPIClient:
         )
         res.raise_for_status()
 
+
+    def update_story(self, story_id, data):
+        res = requests.put(
+            f"{self.BASE_URL}/stories/{story_id}",
+            json=data,
+            headers=self._headers()
+        )
+        res.raise_for_status()
+        return res.json()
+
+
     def get_published_stories(self):
         return self._get("/stories?status=published")
 
