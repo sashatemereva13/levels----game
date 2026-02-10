@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { startStory, getCurrentPage } from "../../api/gameplayAPI";
+import { startStory, choose } from "../../api/gameplayAPI";
 import "../../css/PlayScene.css";
 import ProgressBar from "./ProgressBar";
 import TypewriterText from "../../utils/TypeWriter";
@@ -23,7 +23,7 @@ export default function PlayScene() {
   }, [storyId]);
 
   const goNext = async (nextId) => {
-    const next = await getCurrentPage(nextId);
+    const next = await choose(storyId, nextId);
     setHistory((h) => [...h, next]);
     setPage(next);
     window.scrollTo({ top: 0, behavior: "smooth" });

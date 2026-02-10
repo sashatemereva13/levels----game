@@ -19,7 +19,6 @@ const api = async (path, options = {}) => {
 };
 
 export const getStories = () => api("/stories");
-
 export const startStory = (id) => api(`/gameplay/${id}/start`);
 
 export const getCurrentPage = (id) => api(`/gameplay/${id}/current`);

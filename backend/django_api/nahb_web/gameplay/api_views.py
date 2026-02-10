@@ -36,18 +36,22 @@ def current_page_api(request, story_id):
 
 # choose next page
 @csrf_exempt
-def choose_api(request):
+def choose_api(request, story_id):
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=405)
 
     body = json.loads(request.body)
 
-    story_id = body["story_id"]
     next_page_id = body["next_page_id"]
+
+    if not request.session.session_key:
+        request.session.create()
 
     session_key = request.session.session_key or request.session.create()
 
-    page = service.choose(story_id=story_id, next_page_id=next_page_id, session_key=session_key,
+    page = service.choose(story_id=story_id,
+                          next_page_id=next_page_id,
+                          session_key=session_key,
                           user=request.user if request.user.is_authenticated else None)
 
     return JsonResponse(page)
