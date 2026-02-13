@@ -7,5 +7,5 @@ urlpatterns = [
     path("gameplay/", include("gameplay.urls")),
     path("users/", include("users.urls")),
     path("community/", include("community.urls")),
-
+    path("pages/", include("pages.urls")),
 ]

@@ -6,6 +6,7 @@ import json
 from services.story_api import StoryAPIClient
 from services.story_service import StoryService
 
+
 service = StoryService()
 
 def stories_api(request):
@@ -57,3 +58,33 @@ def delete_story_api(request, story_id):
 
     return JsonResponse({"ok": True})
 
+
+
+@csrf_exempt
+@login_required
+def publish_story_api(request, story_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT required"}, status=405)
+
+    try:
+        service.publish_story(request.user, story_id)
+    except PermissionError:
+        return JsonResponse({"error": "not owner"}, status=403)
+
+    return JsonResponse({"ok": True})
+
+
+@csrf_exempt
+@login_required
+def create_page_api(request, story_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
+
+    data = json.loads(request.body)
+
+    try:
+        page = service.create_page(request.user, story_id, data)
+    except PermissionError:
+        return JsonResponse({"error": "not owner"}, status=403)
+
+    return JsonResponse(page)

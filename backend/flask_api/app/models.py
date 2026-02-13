@@ -14,6 +14,7 @@ class Story(db.Model):
     duration_minutes = db.Column(db.Integer, default=3)
     cover_url = db.Column(db.String(255))
     genre = db.Column(db.String(50))
+    level = db.Column(db.String(32), default="neutrality")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
@@ -28,6 +29,7 @@ class Story(db.Model):
             "duration_minutes": self.duration_minutes,
             "cover_url": self.cover_url,
             "genre": self.genre,
+            "level": self.level,
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 

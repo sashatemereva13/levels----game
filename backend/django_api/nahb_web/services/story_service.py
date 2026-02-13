@@ -12,7 +12,7 @@ class StoryService:
     def create_story(self, user, data):
         story = self.api.create_story(data)
 
-        StoryOwnership.objects.create(
+        StoryOwnership.objects.get_or_create(
             user=user,
             story_id=story["id"]
         )
@@ -47,3 +47,14 @@ class StoryService:
         return self.api.update_story(story_id, data)
 
 
+    def publish_story(self, user, story_id):
+        if not StoryOwnership.objects.filter(user=user, story_id=story_id).exists():
+            raise PermissionError("Not owner")
+
+        return self.api.publish_story(story_id)
+
+    def create_page(self, user, story_id, data):
+        if not StoryOwnership.objects.filter(user=user, story_id=story_id).exists():
+            raise PermissionError("Not owner")
+
+        return self.api.create_page(story_id, data)

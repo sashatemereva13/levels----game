@@ -21,6 +21,15 @@ class StoryAPIClient:
         res.raise_for_status()
         return res.json()
 
+    def _put(self, path, data=None):
+        res = requests.put(
+            f"{self.BASE_URL}{path}",
+            json=data,
+            headers=self._headers()
+        )
+        res.raise_for_status()
+        return res.json()
+
     def _delete(self, path):
         res = requests.delete(
             f"{self.BASE_URL}{path}",
@@ -56,3 +65,10 @@ class StoryAPIClient:
 
     def delete_story(self, story_id):
         self._delete(f"/stories/{story_id}")
+
+    def publish_story(self, story_id):
+        return self._put(f"/stories/{story_id}/publish")
+
+
+    def create_page(self, story_id, data):
+        return self._post(f"/stories/{story_id}/pages", data)

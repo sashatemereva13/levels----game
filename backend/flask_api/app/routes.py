@@ -46,6 +46,17 @@ def create_story():
     )
 
     db.session.add(story)
+    db.session.flush()
+
+    first_page = Page(
+        story_id=story.id,
+        text="Start writing your story..."
+    )
+
+    db.session.add(first_page)
+    db.session.flush()
+
+    story.start_page_id = first_page.id
     db.session.commit()
 
     return story.to_dict(), 201
@@ -85,7 +96,7 @@ def create_page(story_id):
 def get_start_page(story_id):
     story = Story.query.get_or_404(story_id)
 
-    if story.status != "published":
+    if story.status == "suspended":
         return {"error": "Story unavailable"}, 403
 
     if not story.start_page_id:
@@ -101,7 +112,7 @@ def get_page(page_id):
 
     story = Story.query.get(page.story_id)
 
-    if story.status != "published":
+    if story.status == "suspended":
         return {"error": "Story unavailable"}, 403
 
     return page.to_dict()
@@ -185,3 +196,13 @@ def update_story(story_id):
 
     return story.to_dict()
 
+
+@api.route("/stories/<int:story_id>/publish", methods=["PUT"])
+@require_api_key
+def publish_stories(story_id):
+    story = Story.query.get_or_404(story_id)
+
+    story.status = "published"
+    db.session.commit()
+
+    return {"status": "published"}
