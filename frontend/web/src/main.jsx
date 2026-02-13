@@ -13,7 +13,7 @@ import { PageWrapper } from "./utils/PageWrapper";
 import BackgroundFX from "./three/BackgroundFX.jsx";
 import LevelsPage from "./components/pages/LevelsPage.jsx";
 import Navbar from "./components/ui/NavBar.jsx";
-import StoryEditor from "./components/pages/StoryEditor.jsx";
+import StoryEditor from "./components/editor/StoryEditor.jsx";
 
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 

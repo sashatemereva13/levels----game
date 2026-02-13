@@ -18,6 +18,9 @@ export const createStory = (data) =>
     body: JSON.stringify(data),
   });
 
+export const publishStory = (id) =>
+  api(`/stories/${id}/publish/`, { method: "PUT" });
+
 export const deleteStory = (id) =>
   api(`/stories/${id}/`, {
     method: "DELETE",

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getStories } from "../../api/gameplayAPI";
 import LevelCard from "./LevelCard";
 import "../../css/LevelsPage.css";
+import VIBRATION_LEVELS from "../../utils/LevelsList";
+import RevealOnScroll from "../../utils/RevealOnScroll";
 
 export default function LevelsPage() {
   const [stories, setStories] = useState([]);
@@ -27,13 +29,32 @@ export default function LevelsPage() {
   if (error) return <div className="loading">{error}</div>;
   if (!stories.length) return <div className="loading">No levels yet ✨</div>;
 
+  const grouped = VIBRATION_LEVELS.map((level) => ({
+    level,
+    stories: stories.filter((s) => s.level === level),
+  }));
+
   return (
     <div className="levelsPage">
       <h1 className="levelsTitle">vibration levels</h1>
 
-      <div className="levelsGrid">
-        {stories.map((story) => (
-          <LevelCard key={story.id} story={story} />
+      <div className="levelsWrapper">
+        {grouped.map((section) => (
+          <RevealOnScroll key={section.level}>
+            <div key={section.level} className="levelSection">
+              <h2 className="levelName">{section.level.replace("_", " ")}</h2>
+
+              {section.stories.length > 0 ? (
+                <div className="levelsGrid">
+                  {section.stories.map((story) => (
+                    <LevelCard key={story.id} story={story} />
+                  ))}
+                </div>
+              ) : (
+                <div className="levelEmpty">no stories yet ✨</div>
+              )}
+            </div>
+          </RevealOnScroll>
         ))}
       </div>
     </div>

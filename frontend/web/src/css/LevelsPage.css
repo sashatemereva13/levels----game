@@ -20,12 +20,14 @@
 ====================================== */
 
 .levelsPage {
-  min-height: 100vh;
+  height: 100vh;
   padding: 6rem 2rem 5rem;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  overflow: hidden;
 
   background:
     radial-gradient(
@@ -75,6 +77,46 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2.4rem;
+}
+
+.levelsWrapper {
+  flex: 1; /* take remaining height */
+  width: 100%;
+  max-width: 1200px;
+
+  overflow-y: auto; /* scroll happens here */
+  padding-right: 6px; /* space for scrollbar */
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.levelsWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.levelsWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.levelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.levelName {
+  font-size: 1.4rem;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  text-transform: capitalize;
+}
+
+.levelEmpty {
+  opacity: 0.35;
+  font-style: italic;
 }
 
 /* ======================================
@@ -192,6 +234,23 @@
   50% {
     opacity: 0.9;
   }
+}
+
+/* ======================================
+   ✨ Scroll Reveal Animation
+====================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ======================================

@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMyStories, createStory, deleteStory } from "../../api/storyAPI";
+import {
+  getMyStories,
+  createStory,
+  deleteStory,
+  publishStory,
+} from "../../api/storyAPI";
 import { getPlayStats, getRatingStats } from "../../api/storyStatsAPI";
+import VIBRATION_LEVELS from "../../utils/LevelsList";
 
 import "../../css/Dashboard.css";
 
@@ -12,6 +18,7 @@ export default function Dashboard() {
   const [duration, setDuration] = useState("");
   const [genre, setGenre] = useState("");
   const [cover, setCover] = useState("");
+  const [level, setLevel] = useState("");
 
   const nav = useNavigate();
 
@@ -40,25 +47,32 @@ export default function Dashboard() {
   }, []);
 
   const create = async () => {
-    if (!title.trim()) return;
+    if (!title.trim() || !level) return;
 
-    await createStory({
+   const story = await createStory({
       title,
       description,
       duration_minutes: duration,
       genre,
+      level,
       cover_url: cover,
     });
     setTitle("");
     setDescription("");
-    setDuration(3);
+    setDuration("");
     setGenre("");
+    setLevel("");
     setCover("");
-    load();
+    nav(`/dashboard/edit/${story.id}`);
   };
 
   const remove = async (id) => {
     await deleteStory(id);
+    load();
+  };
+
+  const publish = async (id) => {
+    await publishStory(id);
     load();
   };
 
@@ -85,7 +99,9 @@ export default function Dashboard() {
 
         <input
           type="number"
-          placeholder="length in minutes"
+          min="1"
+          step="1"
+          placeholder="length (minutes)"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
         />
@@ -95,6 +111,18 @@ export default function Dashboard() {
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
         />
+
+        <select value={level} onChange={(e) => setLevel(e.target.value)}>
+          <option value="" disabled>
+            choose the level of vibration ✨
+          </option>
+
+          {VIBRATION_LEVELS.map((l) => (
+            <option key={l} value={l}>
+              {l.replace("_", " ")}
+            </option>
+          ))}
+        </select>
 
         <input
           placeholder="cover image url"
@@ -155,6 +183,9 @@ export default function Dashboard() {
 
                 <button onClick={() => nav(`/play/${s.id}`)}>preview</button>
 
+                {s.status === "draft" && (
+                  <button onClick={() => publish(s.id)}>publish</button>
+                )}
                 <button onClick={() => remove(s.id)} className="danger">
                   delete
                 </button>

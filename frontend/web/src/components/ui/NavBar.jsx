@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="navBar">
       <div className="navLeft">
-        <Link to="/levels" className="navLogo">
+        <Link to="/" className="navLogo">
           selfinder
         </Link>
       </div>

@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import MagicBallScene from "./three/MagicBallScene";
 import "./App.css";
 
 export default function App() {
   return (
     <div className="levelsPage">
-      <h1 className="levelsTitle">vibration levels</h1>
-      <Link to="/levels" className="playButton">
-        <motion.button
-          className="playButtonInner"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          levels
-        </motion.button>
-      </Link>
+      {/* 3D BACKGROUND */}
+      <MagicBallScene />
+
+      {/* UI OVERLAY */}
+      <div className="levelsContent">
+        <h1 className="levelsTitle">are you ready?</h1>
+        {/* 
+        <Link to="/levels">
+          <motion.button
+            className="playButton"
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            enter
+          </motion.button>
+        </Link> */}
+      </div>
     </div>
   );
 }
