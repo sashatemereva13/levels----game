@@ -1,17 +1,23 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
+from users.models import Profile
 
 
 class AuthService:
 
-    def register(self, request, username, password):
+    def register(self, request, username, password, role="reader"):
         if User.objects.filter(username=username).exists():
             raise ValidationError("Username already exists")
 
         user = User.objects.create_user(
             username=username,
             password=password
+        )
+
+        Profile.objects.get_or_create(
+            user=user,
+            role=role
         )
 
         login(request, user)

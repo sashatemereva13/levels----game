@@ -11,9 +11,11 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [role, setRole] = useState("reader");
+
   const submit = async (e) => {
     e.preventDefault();
-    await register(email, password);
+    await register(email, password, role);
     nav("/levels");
   };
 
@@ -32,6 +34,11 @@ export default function RegisterPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="reader">Reader</option>
+          <option value="author">Author</option>
+        </select>
 
         <button type="submit">Register</button>
 

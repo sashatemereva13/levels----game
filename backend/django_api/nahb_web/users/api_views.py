@@ -18,7 +18,8 @@ def register_api(request):
         user = service.register(
             request,
             username=body["username"],
-            password=body["password"]
+            password=body["password"],
+            role=body.get("role", "reader")
         )
     except ValidationError as e:
         return JsonResponse({"error": str(e)}, status=400)

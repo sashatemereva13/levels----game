@@ -29,7 +29,7 @@ export default function LevelsPage() {
   if (error) return <div className="loading">{error}</div>;
   if (!stories.length) return <div className="loading">No levels yet ✨</div>;
 
-  const grouped = VIBRATION_LEVELS.map((level) => ({
+  const grouped = [...VIBRATION_LEVELS].reverse().map((level) => ({
     level,
     stories: stories.filter((s) => s.level === level),
   }));
