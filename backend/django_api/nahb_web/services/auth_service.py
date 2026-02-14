@@ -15,10 +15,10 @@ class AuthService:
             password=password
         )
 
-        Profile.objects.get_or_create(
-            user=user,
-            role=role
-        )
+        user.profile.role = role
+        user.profile.save()
+
+        user.refresh_from_db()
 
         login(request, user)
         return user

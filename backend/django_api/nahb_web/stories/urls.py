@@ -9,7 +9,7 @@ urlpatterns = [
     path("<int:story_id>/update/", update_story_api),
     path("<int:story_id>/", delete_story_api),
     path("<int:story_id>/publish/", publish_story_api),
-    path("<int:story_id>/page/", create_page_api)
+    path("<int:story_id>/pages/", create_page_api)
 
 ]
 

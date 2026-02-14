@@ -42,6 +42,7 @@ def create_story():
 
         duration_minutes=data.get("duration_minutes", 3),
         cover_url=data.get("cover_url"),
+        level=data.get("level", "neutrality"),
         genre=data.get("genre"),
     )
 
