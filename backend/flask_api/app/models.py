@@ -9,13 +9,27 @@ class Story(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(20), default="draft")
-    start_page_id = db.Column(db.Integer, db.ForeignKey("pages.id", name="fk_story_start_page"), nullable=True)
+
+    start_page_id = db.Column(
+        db.Integer,
+        db.ForeignKey("pages.id", name="fk_story_start_page"),
+        nullable=True
+    )
+
     illustration_url = db.Column(db.String(500), nullable=True)
     duration_minutes = db.Column(db.Integer, default=3)
     cover_url = db.Column(db.String(255))
     genre = db.Column(db.String(50))
     level = db.Column(db.String(32), default="neutrality")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    pages = db.relationship(
+        "Page",
+        backref="story",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        foreign_keys="Page.story_id",
+    )
 
     def to_dict(self):
         return {
@@ -38,7 +52,11 @@ class Page(db.Model):
     __tablename__ = "pages"
 
     id = db.Column(db.Integer, primary_key=True)
-    story_id = db.Column(db.Integer, db.ForeignKey("stories.id"), nullable=False)
+
+    story_id = db.Column(
+        db.Integer,
+        db.ForeignKey("stories.id", ondelete="CASCADE"),
+        nullable=False)
 
     text = db.Column(db.Text, nullable=False)
     is_ending = db.Column(db.Boolean, default=False)
@@ -49,7 +67,9 @@ class Page(db.Model):
         "Choice",
         foreign_keys="Choice.page_id",
         back_populates="page",
+        cascade="all, delete-orphan",
         lazy=True)
+
 
     def to_dict(self):
         return {
@@ -66,11 +86,29 @@ class Choice(db.Model):
     __tablename__ = "choices"
 
     id = db.Column(db.Integer, primary_key=True)
-    page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
+
+    page_id = db.Column(
+        db.Integer,
+        db.ForeignKey("pages.id", ondelete="CASCADE"),
+        nullable=False)
+
+    next_page_id = db.Column(
+        db.Integer,
+        db.ForeignKey("pages.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
     text = db.Column(db.String(255), nullable=False)
-    next_page_id = db.Column(db.Integer, db.ForeignKey("pages.id"), nullable=False)
-    page = db.relationship("Page", foreign_keys=[page_id], back_populates="choices")
+
+    page = db.relationship(
+        "Page",
+        foreign_keys=[page_id],
+        back_populates="choices")
+
     next_page = db.relationship("Page", foreign_keys=[next_page_id])
+
+
+
 
     def to_dict(self):
         return {

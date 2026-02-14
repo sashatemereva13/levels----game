@@ -49,15 +49,21 @@ def create_story():
     db.session.add(story)
     db.session.flush()
 
+
     first_page = Page(
         story_id=story.id,
         text="Start writing your story..."
     )
 
-    db.session.add(first_page)
-    db.session.flush()
+    if not story.start_page_id:
+        story.start_page_id = first_page.id
 
-    story.start_page_id = first_page.id
+    #
+    # db.session.add(first_page)
+    # db.session.flush()
+    #
+    # story.start_page_id = first_page.id
+
     db.session.commit()
 
     return story.to_dict(), 201
@@ -107,6 +113,12 @@ def get_start_page(story_id):
     return page.to_dict()
 
 
+@api.route("/stories/<int:story_id>/pages", methods=["GET"])
+def get_story_pages(story_id):
+    pages = Page.query.filter_by(story_id=story_id).all()
+    return jsonify([p.to_dict() for p in pages])
+
+
 @api.route("/pages/<int:page_id>", methods=["GET"])
 def get_page(page_id):
     page = Page.query.get_or_404(page_id)
@@ -119,6 +131,7 @@ def get_page(page_id):
     return page.to_dict()
 
 
+@require_api_key
 @api.route("/pages/<int:page_id>/choices", methods=["POST"])
 def create_choice(page_id):
     page = Page.query.get_or_404(page_id)
@@ -143,7 +156,7 @@ def create_choice(page_id):
     return choice.to_dict(), 201
 
 
-@api.route("/page/<int:page_id>", methods=["PUT"])
+@api.route("/pages/<int:page_id>", methods=["PUT"])
 @require_api_key
 def update_page(page_id):
     page = Page.query.get_or_404(page_id)

@@ -31,3 +31,5 @@ export const updateStory = (id, data) =>
     method: "PUT",
     body: JSON.stringify(data),
   });
+
+export const getStory = (id) => api(`/stories/${id}/detail/`);

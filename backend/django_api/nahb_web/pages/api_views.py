@@ -7,7 +7,7 @@ from services.page_service import PageService
 
 service = PageService()
 
-
+@csrf_exempt
 @login_required
 def page_detail_api(request, page_id):
 

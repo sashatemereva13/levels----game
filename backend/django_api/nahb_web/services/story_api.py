@@ -60,6 +60,9 @@ class StoryAPIClient:
     def get_page(self, page_id):
         return self._get(f"/pages/{page_id}")
 
+    def get_story_pages(self, story_id):
+        return self._get(f"/stories/{story_id}/pages")
+
     def create_story(self, data):
         return self._post("/stories", data)
 

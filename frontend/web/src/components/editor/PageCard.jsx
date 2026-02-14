@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updatePage } from "../../api/editorAPI";
 
 /* ======================
@@ -15,10 +15,6 @@ const useDebounce = (value, delay = 500) => {
   return debounced;
 };
 
-/* ======================
-   PAGE CARD COMPONENT
-====================== */
-
 export default function PageCard({
   page,
   pages,
@@ -30,20 +26,22 @@ export default function PageCard({
   const debouncedText = useDebounce(page.text);
   const debouncedEnding = useDebounce(page.is_ending);
 
+  const didMount = useRef(false);
+
   /* ======================
      AUTO SAVE (per page)
   ====================== */
-
   useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+
     updatePage(page.id, {
       text: debouncedText,
       is_ending: debouncedEnding,
     });
   }, [debouncedText, debouncedEnding, page.id]);
-
-  /* ======================
-     UI
-  ====================== */
 
   return (
     <div className="editorCard">
@@ -60,7 +58,7 @@ export default function PageCard({
       <label className="endingToggle">
         <input
           type="checkbox"
-          checked={page.is_ending}
+          checked={!!page.is_ending}
           onChange={(e) => updateLocal(page.id, "is_ending", e.target.checked)}
         />
         ending page

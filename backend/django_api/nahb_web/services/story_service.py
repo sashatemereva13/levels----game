@@ -58,3 +58,10 @@ class StoryService:
             raise PermissionError("Not owner")
 
         return self.api.create_page(story_id, data)
+
+
+    def get_story_pages(self, user, story_id):
+        if not StoryOwnership.objects.filter(user=user, story_id=story_id).exists():
+            raise PermissionError("Not owner")
+
+        return self.api.get_story_pages(story_id)

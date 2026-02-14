@@ -22,6 +22,19 @@ def create_story_api(request):
     story = service.create_story(request.user, data)
     return JsonResponse(story)
 
+@login_required
+@csrf_exempt
+def get_story_api(request, story_id):
+    if request.method != "GET":
+        return JsonResponse({"error": "GET required"}, status=405)
+
+    try:
+        story = service.api.get_story(story_id)
+    except PermissionError:
+        return JsonResponse({"error": "not found"}, status=404)
+
+    return JsonResponse(story)
+
 
 @login_required
 def my_stories_api(request):
@@ -88,3 +101,24 @@ def create_page_api(request, story_id):
         return JsonResponse({"error": "not owner"}, status=403)
 
     return JsonResponse(page)
+
+
+
+@csrf_exempt
+@login_required
+def story_pages_api(request, story_id):
+    if request.method == "GET":
+        pages = service.get_story_pages(request.user, story_id)
+        return JsonResponse(pages, safe=False)
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        try:
+            page = service.create_page(request.user, story_id, data)
+        except PermissionError:
+            return JsonResponse({"error": "not owner"}, status=403)
+
+        return JsonResponse(page)
+
+    return JsonResponse({"error": "Method not allowed"}, status=405)

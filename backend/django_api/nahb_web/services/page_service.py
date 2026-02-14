@@ -12,24 +12,25 @@ class PageService:
 
 
     def get_page(self, user, page_id):
-        page = client.get(page_id)
+        page = client.get_page(page_id)
         self._check_owner(user, page["story_id"])
         return page
 
 
     def update_page(self, user, page_id, data):
-        page = client.get(page_id)
+        page = client.get_page(page_id)
         self._check_owner(user, page["story_id"])
-        return client.update(page_id, data)
+        return client.update_page(page_id, data)
 
 
     def delete_page(self, user, page_id):
-        page = client.get(page_id)
+        page = client.get_page(page_id)
         self._check_owner(user, page["story_id"])
-        return client.delete(page_id)
+        client.delete_page(page_id)
+        return {"ok": True}
 
 
     def create_choice(self, user, page_id, data):
-        page = client.get(page_id)
+        page = client.get_page(page_id)
         self._check_owner(user, page["story_id"])
         return client.create_choice(page_id, data)
