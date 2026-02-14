@@ -281,3 +281,39 @@
     radial-gradient(circle at 30% 40%, #7fffd4, transparent 60%),
     radial-gradient(circle at 70% 60%, #ffb3d9, transparent 60%), #0f0e14;
 }
+
+/* ===============================
+   CREATE SELECT
+================================ */
+
+.dashboardCreate select {
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(10px);
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+/* Hover */
+.dashboardCreate select:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Focus */
+.dashboardCreate select:focus {
+  outline: none;
+  border-color: rgba(127, 255, 212, 0.6);
+  box-shadow: 0 0 12px rgba(127, 255, 212, 0.2);
+}

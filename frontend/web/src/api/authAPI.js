@@ -16,10 +16,10 @@ export const login = (username, password) =>
     body: JSON.stringify({ username, password }),
   });
 
-export const register = (username, password) =>
+export const register = (username, password, role) =>
   api("/users/register/", {
     method: "POST",
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password, role }),
   });
 
 export const logout = () => api("/users/logout/");

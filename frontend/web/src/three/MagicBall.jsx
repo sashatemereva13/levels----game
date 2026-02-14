@@ -19,7 +19,7 @@ export default function MagicBall() {
   });
 
   return (
-    <group position={[0, 0, -2]} ref={ballRef}>
+    <group position={[2, 0, -2]} ref={ballRef}>
       {/* inner glow light */}
       <pointLight intensity={2} distance={3} color="#b98cff" />
 

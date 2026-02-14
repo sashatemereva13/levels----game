@@ -3,6 +3,9 @@ import { useAuth } from "../../auth/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "../ui/AuthLayout";
 import "../../css/Auth.css";
+import { Canvas } from "@react-three/fiber";
+import MagicBall from "../../three/MagicBall";
+import MagicBall2 from "../../three/MagicBall2";
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -16,11 +19,16 @@ export default function RegisterPage() {
   const submit = async (e) => {
     e.preventDefault();
     await register(email, password, role);
-    nav("/levels");
+    if (role === "author") {
+      nav("/dashboard");
+    } else {
+      nav("/levels");
+    }
   };
 
   return (
     <AuthLayout title="Create account">
+      <div className="canvasWrapper"></div>
       <form onSubmit={submit} className="authForm">
         <input
           placeholder="Email"
@@ -35,12 +43,27 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="reader">Reader</option>
-          <option value="author">Author</option>
-        </select>
+        <div className="roleToggle">
+          <button
+            type="button"
+            className={`roleButton ${role === "reader" ? "active" : ""}`}
+            onClick={() => setRole("reader")}
+          >
+            Reader
+          </button>
 
-        <button type="submit">Register</button>
+          <button
+            type="button"
+            className={`roleButton ${role === "author" ? "active" : ""}`}
+            onClick={() => setRole("author")}
+          >
+            Author
+          </button>
+        </div>
+
+        <button className="submit" type="submit">
+          Register
+        </button>
 
         <p className="authLink">
           Already registered? <Link to="/login">Login</Link>

@@ -17,8 +17,16 @@ export default function EnterText() {
         anchorY="middle"
         color={hovered ? "#ffffff" : "#bca7ff"}
         onClick={() => navigate("/levels")}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          setHovered(false);
+          document.body.style.cursor = "default";
+        }}
       >
         enter
         <meshStandardMaterial

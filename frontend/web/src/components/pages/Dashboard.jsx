@@ -49,7 +49,7 @@ export default function Dashboard() {
   const create = async () => {
     if (!title.trim() || !level) return;
 
-   const story = await createStory({
+    const story = await createStory({
       title,
       description,
       duration_minutes: duration,
@@ -117,7 +117,7 @@ export default function Dashboard() {
             choose the level of vibration ✨
           </option>
 
-          {VIBRATION_LEVELS.map((l) => (
+          {[...VIBRATION_LEVELS].reverse().map((l) => (
             <option key={l} value={l}>
               {l.replace("_", " ")}
             </option>

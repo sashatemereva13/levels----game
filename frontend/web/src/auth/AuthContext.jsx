@@ -19,8 +19,8 @@ export function AuthProvider({ children }) {
     setUser(data);
   };
 
-  const register = async (u, p) => {
-    const data = await authAPI.register(u, p);
+  const register = async (u, p, role) => {
+    const data = await authAPI.register(u, p, role);
     setUser(data);
   };
 
