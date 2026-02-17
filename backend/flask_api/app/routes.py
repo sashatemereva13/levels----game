@@ -58,11 +58,11 @@ def create_story():
     if not story.start_page_id:
         story.start_page_id = first_page.id
 
-    #
-    # db.session.add(first_page)
-    # db.session.flush()
-    #
-    # story.start_page_id = first_page.id
+
+    db.session.add(first_page)
+    db.session.flush()
+
+    story.start_page_id = first_page.id
 
     db.session.commit()
 

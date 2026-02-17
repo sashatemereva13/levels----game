@@ -38,7 +38,7 @@ export default function StoryEditor() {
 
   useEffect(() => {
     const loadAll = async () => {
-      // 1) story meta
+      setPages([]);
       const story = await getStory(storyId);
 
       setStatus(story.status || "draft");
@@ -48,14 +48,11 @@ export default function StoryEditor() {
       setGenre(story.genre || "");
       setCover(story.cover_url || "");
       setLevel(story.level || "");
+
+      const pagesData = await getStoryPages(storyId);
+      setPages(pagesData);
     };
 
-    const loadPages = async () => {
-      const data = await getStoryPages(storyId);
-      setPages(data);
-    };
-
-    loadPages();
     loadAll();
   }, [storyId]);
 
